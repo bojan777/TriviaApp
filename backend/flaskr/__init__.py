@@ -114,26 +114,24 @@ def create_app(test_config=None):
   @cross_origin()
   def retrieve_questions():
 
-    try:
-      questions = Question.query.all()
-      categories = get_category_list()
-      if len(questions) == 0:
-          abort(404)
+    questions = Question.query.all()
+    categories = get_category_list()
+    if len(questions) == 0:
+        abort(404)
 
-      total_questions = len(questions)
-      current_questions = paginate_questions(request, questions)
-
-      
-      return jsonify({
-          'success': True,
-          'questions': current_questions,
-          'total_questions' : total_questions,
-          'categories': categories,
-          'current_category': None
-      })
+    total_questions = len(questions)
+    current_questions = paginate_questions(request, questions)
+    if len(current_questions) == 0:
+      abort(404)
     
-    except:
-      abort(422)
+    return jsonify({
+        'success': True,
+        'questions': current_questions,
+        'total_questions' : total_questions,
+        'categories': categories,
+        'current_category': None
+    })
+    
 
 
   '''
@@ -164,7 +162,8 @@ def create_app(test_config=None):
       
       return jsonify({
         'status': 200,
-        'success': True
+        'success': True,
+        'deleted': q_id
         })
 
     except:
@@ -194,6 +193,9 @@ def create_app(test_config=None):
     
     if not request.method == 'POST':
       abort(405)
+
+    if None in (new_question, new_answer, new_difficulty, new_category):
+          abort(422)
 
     try:
       question = Question(question=new_question, answer=new_answer, 
