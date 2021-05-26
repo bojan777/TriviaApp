@@ -19,8 +19,6 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
-
-
 def paginate_questions(request, selection):
   page = request.args.get('page', 1, type=int)
   start =  (page - 1) * QUESTIONS_PER_PAGE
@@ -38,24 +36,21 @@ def create_app(test_config=None):
   CORS(app)
   setup_db(app)
   cors = CORS(app, resources={r"*/api/*": {"origins": "*"}})
+
   
+  '''
+  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs      
+  '''
+  '''
+  @TODO: Use the after_request decorator to set Access-Control-Allow                                 
+  '''
+
   # CORS Headers 
   @app.after_request
   def after_request(response):
       response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
       response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
       return response
-
-
-
-  '''
-  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs      
-  '''
-
-  '''
-  @TODO: Use the after_request decorator to set Access-Control-Allow                                 
-  '''
-
 
 
   def get_category_list():
@@ -109,7 +104,6 @@ def create_app(test_config=None):
   '''
 
 
-
   @app.route('/questions')
   @cross_origin()
   def retrieve_questions():
@@ -132,7 +126,6 @@ def create_app(test_config=None):
         'current_category': None
     })
     
-
 
   '''
   @TODO:                                            
@@ -284,7 +277,6 @@ def create_app(test_config=None):
       print('Exception is >> ',e)
       print(sys.exc_info())
       abort(422)
-
 
 
 
