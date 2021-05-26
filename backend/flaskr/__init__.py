@@ -52,27 +52,22 @@ def create_app(test_config=None):
       response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
       return response
 
-
   def get_category_list():
       categories = {}
       for category in Category.query.all():
           categories[category.id] = category.type
       return categories
 
-
-
   def get_questions_list():
       questions = Question.query.all()
       formatted_questions = [question.format() for question in questions]
       return formatted_questions
-
 
   '''
   @TODO: 
   Create an endpoint to handle GET requests                              
   for all available categories.
   '''
-
 
   @app.route('/categories')
   @cross_origin()
@@ -195,7 +190,6 @@ def create_app(test_config=None):
                           difficulty=new_difficulty, category=new_category)
       question.insert()
 
-
       return jsonify({
         'success': True,
         'status': 200,
@@ -205,7 +199,6 @@ def create_app(test_config=None):
       print('Exception is >> ',e)
       print(sys.exc_info())
       abort(422)
-
 
 
   '''
@@ -218,7 +211,6 @@ def create_app(test_config=None):
   only question that include that string within their question. 
   Try using the word "title" to start. 
   '''
-
 
   @app.route('/questions/search', methods=['POST'])
   @cross_origin()
@@ -247,7 +239,6 @@ def create_app(test_config=None):
       abort(422)
 
 
-
   '''
   @TODO:                                  
   Create a GET endpoint to get questions based on category. 
@@ -264,7 +255,6 @@ def create_app(test_config=None):
     try:
       questions = Question.query.filter_by(category=int(c_id))
       formatted_questions = [question.format() for question in questions]
-      
 
       return jsonify({
           'success': True,
@@ -277,7 +267,6 @@ def create_app(test_config=None):
       print('Exception is >> ',e)
       print(sys.exc_info())
       abort(422)
-
 
 
   '''
@@ -322,7 +311,6 @@ def create_app(test_config=None):
       print('Exception is >> ',e)
       print(sys.exc_info())
       abort(422)
-
 
 
   '''
